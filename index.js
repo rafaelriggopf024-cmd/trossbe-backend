@@ -26,10 +26,20 @@ app.get("/produtos", async (req, res) => {
   const { data, error } = await supabase
     .from("produtos")
     .select("*")
-    .order("id", { ascending: true });
+    .order("nome", { ascending: true });
 
-  if (error) return res.status(400).json({ error: error.message });
-  res.json(data);
+  if (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Erro ao buscar produtos" });
+  }
+
+  // Corrige URL das imagens para funcionar no Vercel
+  const produtosCorrigidos = data.map(p => ({
+    ...p,
+    imagem_url: `/trossbe-frontend-main${p.imagem_url}`
+  }));
+
+  res.json(produtosCorrigidos);
 });
 
 // criar produto (se precisar)
