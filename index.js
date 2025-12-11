@@ -6,7 +6,12 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST"],
+  allowedHeaders: ["Content-Type"]
+}));
+
 app.use(express.json());
 
 const SUPABASE_URL = process.env.SUPABASE_URL || "https://amxzaxhdnabtgkitkejq.supabase.co";
